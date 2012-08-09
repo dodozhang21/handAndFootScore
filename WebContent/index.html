@@ -16,51 +16,71 @@
         </script>
         <script src="my.js">
         </script>
+        <script src="js/Hand.js"></script>
+        <script src="js/Game.js"></script>
     </head>
     <body>
+    
+ 
         <!-- Home -->
-        <div data-role="page" id="home">
+        <div id="home" data-role="page" data-theme="a">
             <div data-theme="" data-role="header">
                 <h3>
                     Hand and Foot
                 </h3>
             </div>
-            <div data-role="content" style="padding: 15px">
-                <a data-role="button" data-transition="fade" href="#newGame">
+            
+            <div data-role="content">
+                <a data-role="button" data-transition="fade" data-theme="b" href="#newGame">
                     New Game
                 </a>
+                <!--  
                 <a data-role="button" data-transition="fade" href="#scoreHistory">
                     Score History
                 </a>
+                -->
             </div>
         </div>
         
         
         <!-- newGame -->
-        <div data-role="page" id="newGame">
-            <div data-theme="" data-role="header">
-                <h3>
-                    New Game for 11/11/2012
-                </h3>
-            </div>
-            <div data-role="content" style="padding: 15px">
-                Hello
-            </div>
-        </div>
-        
-        
-        <!-- scoreHistory -->
-        <div data-role="page" id="scoreHistory">
-            <div data-theme="" data-role="header">
-                <h3>
-                    Score History
-                </h3>
-            </div>
-            <div data-role="content" style="padding: 15px">
-                Hello
-            </div>
-        </div>
-        
+        <div id="newGame" data-role="page" data-theme="a">
+			<div data-theme="" data-role="header">	
+			 	<h3>Enter Team Names</h3>
+			</div>
+			  
+		  	<div data-role="content">
+	          <label for="team1" class="ui-hidden-accessible ui-input-text">Team 1:</label>
+	          <input class="ui-input-text ui-body-a ui-corner-all ui-shadow-inset" name="team1" id="team1" value="" placeholder="Team 1" data-theme="a" type="text">
+
+	          <label for="team2" class="ui-hidden-accessible">Team 2:</label>
+	          <input class="ui-input-text ui-body-a ui-corner-all ui-shadow-inset" name="team2" id="team2" value="" placeholder="Team 2" data-theme="a" type="text">
+	    	  
+	    	  <a data-role="button" data-transition="pop" data-theme="b" href="#gameBoard">
+                 	Start Game
+                 </a>
+             </div>
+			
+		</div>
+		
+		
+		<!-- gameBoard -->
+		<div id="gameBoard" data-transition="pop" data-corners="true" data-shadow="true" data-role="page" data-theme="a">
+			<div data-theme="" data-role="header">	
+				<h3>
+					Game for <span id="team1Name"></span>, <span id="team2Name"></span>
+				</h3>
+			</div>
+				  
+		  	<div data-role="content" style="padding: 15px">
+		  		hello
+		  	
+		  	
+		  	
+		  		<a data-role="button" data-transition="fade" data-theme="b" href="#home">Done</a>
+		  	</div>
+			
+		</div>
         
         
         
@@ -73,7 +93,21 @@
         
         
         <script>
-            //App custom javascript
+        	var game;
+        	$(document).delegate('.ui-page', 'pageshow', function () {
+            	var pageId = $(this).attr('id');
+            	if('gameBoard' == pageId) {
+            		var team1 = $('#team1').val();
+            		var team2 = $('#team2').val();
+            		console.log(team1);
+            		console.log(team2);
+            		
+            		game = new Game(team1, team2);
+            		
+            		$('#team1Name').html(game.getTeam1());
+            		$('#team2Name').html(game.getTeam2());
+        		}
+        	});
         </script>
     </body>
 </html>
