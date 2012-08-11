@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>
+        </title>
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0-alpha.1/jquery.mobile-1.2.0-alpha.1.min.css" />
+    
+        <style>
+            /* App custom styles */
+        </style>
+        <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.2.0-alpha.1/jquery.mobile-1.2.0-alpha.1.min.js"></script>
+  
+
+    </head>
+    <body>
+
+
+	<div data-role="page" id="home">
+ 		<a data-rel="popup" id="popupClick" href="#popupLogin">Open Popup</a>
+ 			
+ 			
+		<div data-role="popup" id="popupLogin" data-theme="a" class="ui-corner-all photopopup">
+			<div style="padding:10px 20px;">
+			  <h3>Please sign in</h3>
+	          <label for="un" class="ui-hidden-accessible">Username:</label>
+	          <input type="text" name="user" id="un" value="" placeholder="username" data-theme="a" />
+
+	          <label for="pw" class="ui-hidden-accessible">Password:</label>
+	          <input type="password" name="pass" id="pw" value="" placeholder="password" data-theme="a" />
+
+	    	  <button type="submit" data-theme="b">Sign in</button>
+			</div>
+		</div>
+	</div>
+	
+	<script>
+		
+	$( document ).on( "pageinit", function() {
+	});
+	
+	$(document).delegate('#popupLogin', 'click', function() {
+		console.log('clicked');
+	});
+
+		//$('#popupLogin').popup({theme: "a"});
+		
+// 	$("#popupClick").click(function (e) {
+// 	    e.stopImmediatePropagation();
+// 	    e.preventDefault();
+// 	    //Do important stuff....
+// 	    console.log('clicked');
+	    
+// 	    $('#popupLogin').popup("open");
+// 	});
+
+	</script>
+    </body>
+</html>
