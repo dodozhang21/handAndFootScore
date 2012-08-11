@@ -13,7 +13,7 @@ var Game = function(team1, team2) {
 };
 
 Game.prototype = {
-
+		
 		getTeam1 : function() {
 			return this.team1;
 		},

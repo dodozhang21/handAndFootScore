@@ -40,24 +40,24 @@
 		
  
         <!-- home -->
-        <div id="home" data-role="page" data-theme="a" data-title="Hand and Foot Score">
+        <div id="home" data-role="page" data-theme="a" data-title="Hand and Foot Score Sheet">
             <div data-theme="" data-role="header">
                 <h3>
-                    Hand and Foot Score
+                    Hand and Foot Score Sheet
                 </h3>
             </div>
             
             <div data-role="content">
-                <a data-role="button"  data-theme="b" href="#newGame">
+                <a data-role="button" data-transition="fade" data-theme="b" href="#newGame">
                     New Game
                 </a>
                 <!--  
-                <a data-role="button"  href="#scoreHistory">
+                <a data-role="button" data-transition="fade" href="#scoreHistory">
                     Score History
                 </a>
                 -->
             </div>
-        </div><!-- /home -->
+        </div>
         
         
         <!-- newGame -->
@@ -68,16 +68,17 @@
 			  
 		  	<div data-role="content">
 	          <label for="team1" class="ui-hidden-accessible ui-input-text">Team 1:</label>
-	          <input class="ui-input-text ui-body-a ui-corner-all ui-shadow-inset" name="team1" id="team1" placeholder="Team 1" data-theme="a" type="text">
+	          <input class="ui-input-text ui-body-a ui-corner-all ui-shadow-inset" name="team1" id="team1" value="" placeholder="Team 1" data-theme="a" type="text">
 
 	          <label for="team2" class="ui-hidden-accessible">Team 2:</label>
-	          <input class="ui-input-text ui-body-a ui-corner-all ui-shadow-inset" name="team2" id="team2" placeholder="Team 2" data-theme="a" type="text">
+	          <input class="ui-input-text ui-body-a ui-corner-all ui-shadow-inset" name="team2" id="team2" value="" placeholder="Team 2" data-theme="a" type="text">
 	    	  
-	    	  <br />
-	    	  <a data-role="button" data-theme="b" id="startGame" href="#gameBoard">Start Game</a>
+	    	  <a data-role="button" data-transition="pop" data-theme="b" href="#gameBoard">
+                 	Start Game
+                 </a>
              </div>
 			
-		</div><!-- /newGame -->
+		</div>
 		
 		
 		<!-- gameBoard -->
@@ -86,14 +87,14 @@
 				<h3 style="text-align:center;">
 					Hand and Foot on <span id="todaysDate"></span>
 				</h3>
-    			<a href="#addHandTeam1" data-icon="plus" style="right:auto;" data-theme="b">Add Hand for <span id="team1Name"></span></a>
-    			<a href="#addHandTeam2" data-icon="plus" data-theme="b">Add Hand for <span id="team2Name"></span></a>
+    			<a id="1" class="addHandPopup" data-rel="popup" data-icon="plus" style="right:auto;" data-theme="b">Add Hand for <span id="team1Name"></span></a>
+    			<a id="2" class="addHandPopup" data-rel="popup" data-icon="plus" data-theme="b">Add Hand for <span id="team2Name"></span></a>
 			</div>
 				  
 		  	<div data-role="content" style="padding: 15px">
 		  		<div class="ui-grid-a ui-corner-all scoreAlt1">
 					<div class="ui-block-a scoreColumn">
-						<a class="editHand show-page-loading-msg" data-role="button" data-theme="" data-inline="true" data-icon="gear">Edit Hand</a>
+						<a class="editHand" data-role="button" data-theme="" data-inline="true" data-icon="gear">Edit Hand</a>
 						<div class="ui-grid-a">
 							<div class="ui-block-a scoreColumn"><strong>Bonus:</strong></div>
 							<div class="ui-block-b scoreColumn">100</div>
@@ -179,99 +180,84 @@
 		  			<div class="ui-block-b scoreColumn" style="text-align: right"><button data-theme="e" data-inline="true">Total: 1500</button></div>
 		  		</fieldset>
 		  		<fieldset class="ui-grid-a" style="padding-top: 20px;">
-		  			<div class="ui-block-a"><a data-role="button" data-theme="b" href="#home">Done</a></div>
-		  			<div class="ui-block-b"><a data-role="button" data-theme="b" href="#submitScores">Submit Scores</a></div>
+		  			<div class="ui-block-a"><a data-role="button" data-transition="fade" data-theme="b" href="#home">Done</a></div>
+		  			<div class="ui-block-b"><a data-role="button" data-transition="fade" data-theme="b" href="#submitScores">Submit Scores</a></div>
 		  		</fieldset>
+		  		
+		  		
+		  		
+		  		<div data-role="popup" id="handPopup" data-theme="a" class="ui-corner-all ui-content">
+					
+			          <label for="bonus">Bonus:</label>
+			          <input type="text" id="bonus" value="" placeholder="0" data-theme="a" />
+		
+			          <label for="books">Books:</label>
+			          <input type="text" id="books" value="" placeholder="0" data-theme="a" />
+			          
+			          <label for="points">Points:</label>
+			          <input type="text" id="points" value="" placeholder="0" data-theme="a" />
+						<br />
+			    	  <button data-theme="b" id="addHand">Add Hand</button>
+					
+				</div>
 		  	</div>
 			
-		</div><!-- /gameBoard -->
-		
-		
-		<div id="submitScores" data-role="page" data-theme="a">
-			TO BE IMPLEMENTED :)
-			<a data-role="button"  data-theme="b" href="#home">Done</a>
-		</div><!-- /submitScores -->
+		</div>
+
         
         
         
         
         
-		  		
-		  		
-		<!-- addHandTeam1 -->  		
-	 	<div data-role="page" id="addHandTeam1" data-theme="a" data-title="Add Hand">
-			<div data-theme="" data-role="header">
-				<h3>Add Hand for <span class="team1Name"></span></h3>
-			</div>
-			<div data-role="content" style="padding: 15px">
-	          <label for="team1-bonus">Bonus:</label>
-	          <input type="text" id="team1-bonus" class="bonus" placeholder="0" data-theme="a" />
-	
-	          <label for="team1-books">Books:</label>
-	          <input type="text" id="team1-books" class="books" placeholder="0" data-theme="a" />
-	          
-	          <label for="team1-points">Points:</label>
-	          <input type="text" id="team1-points" class="points" placeholder="0" data-theme="a" />
-				<br />
-	    	  <a data-role="button" data-theme="b" href="#gameBoard">Add Hand</a>
-			</div>
-		</div><!-- /addHandTeam1 -->
-		
-		<!-- addHandTeam2 -->  		
-	 	<div data-role="page" id="addHandTeam2" data-theme="a" data-title="Add Hand">
-			<div data-theme="" data-role="header">
-				<h3>Add Hand for <span class="team2Name"></span></h3>
-			</div>
-			<div data-role="content" style="padding: 15px">
-	          <label for="team2-bonus">Bonus:</label>
-	          <input type="text" id="team2-bonus" class="bonus" placeholder="0" data-theme="a" />
-	
-	          <label for="team2-books">Books:</label>
-	          <input type="text" id="team2-books" class="books" placeholder="0" data-theme="a" />
-	          
-	          <label for="team2-points">Points:</label>
-	          <input type="text" id="team2-points" class="points" placeholder="0" data-theme="a" />
-				<br />
-			  <a data-role="button" data-theme="b" href="#gameBoard">Add Hand</a>
-			</div>
-		</div><!-- /addHandTeam2 -->
         
         
         
         
         <script>
-        	var game = new Game();
-        	
-//         	$(document).on("click", ".show-page-loading-msg", function() {
-//         		$.mobile.loading('show');
-//         	});
+        	var game;
+        	var team;
         	
         	$( document ).on( "pageinit", function() {
-        		$('.showLoading').click(function() {
-        			$.mobile.loading( 'show' );
-        		});
-        	});
-        	
-        	
-        	$( '#newGame' ).on("pagebeforeshow", function() {
-        		// clear inputs
-        		$('#team1').val('');
-        		$('#team2').val('');
+        		$(".addHandPopup").click(function (e) {
+    	    	    e.stopImmediatePropagation();
+    	    	    e.preventDefault();
+    	  
+    	    	    var id = $(this).attr('id');
+    	    	    team = id;
+    	    	    console.log('team is set to ' + id);
+    	    	    
+    	    	    $('#handPopup').popup("open");
+    	    	});
+            	
+            	$('#addHand').click(function (e) {
+    	    	    e.stopImmediatePropagation();
+    	    	    e.preventDefault();
+    	    	    
+    	    	    // get information
+    	    	    var bonus = $('#bonus').val();
+    	    	    var books = $('#books').val();
+    	    	    var points = $('#points').val();
+    	    	    
+    	    	    console.log('bonus = ' + bonus);
+    	    	    console.log('books = ' + books);
+    	    	    console.log('points = ' + points);
+    	    	    
+    	    	    $('#handPopup').popup("close");
+            	});
         	});
         	
         	$( '#gameBoard' ).on("pagebeforeshow", function() {
-        		$.mobile.loading( 'show' );
-        		
         		var d = new Date();
         	    var curr_date = d.getDate();
         	    var curr_month = d.getMonth() + 1; //Months are zero based
         	    var curr_year = d.getFullYear();
-        	    var todaysDate = curr_month + "/" + curr_date + "/" + curr_year;
-        	    
+        	    var todaysDate = curr_date + "/" + curr_month + "/" + curr_year;
+
         		var team1 = $('#team1').val();
         		var team2 = $('#team2').val();
-        		//console.log(team1);
-        		//console.log(team2);
+//         		console.log(team1);
+//         		console.log(team2);
+//         		console.log(todaysDate);
         		
         		game = new Game(team1, team2);
         		
@@ -279,38 +265,11 @@
         		$('#team2Name').html(game.getTeam2());
         		$('#todaysDate').html(todaysDate);
         		
-        		$.mobile.loading( 'hide' );
-        		
         	});
         	
-//         	$( '#gameBoard' ).on("pageshow", function() {
-//         		$.mobile.loading( 'hide' );
-        		
-//         	});
         	
-        	$( '#addHandTeam1' ).on("pagebeforeshow", function() {
-        		loadTeamNames();
-        		clearInputs();
-        		//console.log('show addHandTeam1')
-        	});
-        	
-        	$( '#addHandTeam2' ).on("pagebeforeshow", function() {
-        		loadTeamNames();
-        		clearInputs();
-        		//console.log('show addHandTeam2')
-        	});
-        	
-			function loadGameBoard() {
-				$.mobile.loading( 'show' );
-        		$.mobile.changePage ($( '#gameBoard' ));
-			}
-        	function loadTeamNames() {
-        		$('.team1Name').html(game.getTeam1());
-        		$('.team2Name').html(game.getTeam2());
-        	}
-        	function clearInputs() {
-        		$('input.bonus,input.books,input.points').val('');
-        	}
+
+        
         </script>
     </body>
 </html>
