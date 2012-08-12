@@ -26,12 +26,27 @@ Hand.prototype = {
     	return this.total;
     },
     
-    setId : function(id) {
-    	this.id = id;
-    },
-    
     getId : function() {
     	return this.id;
+    },
+    
+    setBonus : function(bonus) {
+        this.bonus = defaultZero(bonus);
+        this.total = this.bonus + this.books + this.points;
+    },
+    
+    setBooks : function(books) {
+        this.books = defaultZero(books);
+        this.total = this.bonus + this.books + this.points;
+    },
+    
+    setPoints : function(points) {
+        this.points = defaultZero(points);
+        this.total = this.bonus + this.books + this.points;
+    },
+    
+    setId : function(id) {
+    	this.id = id;
     }
     
 };

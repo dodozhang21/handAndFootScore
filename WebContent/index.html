@@ -176,12 +176,32 @@
 			  <a data-role="button" data-theme="b" class="addHand">Add Hand</a>
 			</div>
 		</div><!-- /addHandTeam2 -->
+		
+		<!-- editHandPage -->  		
+	 	<div data-role="page" id="editHandPage" data-theme="a" data-title="Add Hand">
+			<div data-theme="" data-role="header">
+				<h3>Edit Hand</h3>
+			</div>
+			<div data-role="content" style="padding: 15px">
+	          <label for="team1-bonus">Bonus:</label>
+	          <input type="number" id="editHand-bonus" class="bonus" placeholder="0" data-theme="a" />
+	
+	          <label for="team1-books">Books:</label>
+	          <input type="number" id="editHand-books" class="books" placeholder="0" data-theme="a" />
+	          
+	          <label for="team1-points">Points:</label>
+	          <input type="number" id="editHand-points" class="points" placeholder="0" data-theme="a" />
+				<br />
+	    	  <a data-role="button" data-theme="b" id="editHand">Edit Hand</a>
+			</div>
+		</div><!-- /editHandPage -->
         
         
         
         
         <script>
         	var game = new Game();
+        	var handToEdit;
         	
         	$( document ).on( "pageinit", function() {
         		$('.showLoading').click(function() {
@@ -208,6 +228,16 @@
         	
         	$( '#gameBoard' ).on("pageinit", function() {
 //         		console.log('gameBoard pageinit');
+				$(document).on('click', 'a.editHand', function (e) {
+    	    	    e.stopImmediatePropagation();
+    	    	    e.preventDefault();
+    	    	    
+    	    	    var handId = $(this).attr('hand-id');
+    	    	    handToEdit = game.findHand(handId);
+    	    	    
+    	    	    $.mobile.changePage ($( '#editHandPage' ));
+				});
+
         		$('a.doneConfirmation').click(function (e) {
     	    	    e.stopImmediatePropagation();
     	    	    e.preventDefault();
@@ -217,6 +247,36 @@
     	    	    e.stopImmediatePropagation();
     	    	    e.preventDefault();
     	    	    $.mobile.changePage ($( '#home' ));
+        		});
+        	});
+        	
+        	$( '#editHandPage' ).on("pagebeforeshow", function() {
+        		if(handToEdit != null) {
+        			$('#editHand-bonus').val(handToEdit.getBonus() == 0 ? '' : handToEdit.getBonus());
+        			$('#editHand-books').val(handToEdit.getBooks() == 0 ? '' : handToEdit.getBooks());
+        			$('#editHand-points').val(handToEdit.getPoints() == 0 ? '' : handToEdit.getPoints());
+        		}
+        	});
+        	
+        	$( '#editHandPage' ).on("pageinit", function() {
+        		$('#editHand').click(function(e) {
+    	    	    e.stopImmediatePropagation();
+    	    	    e.preventDefault();
+    	    	    
+    	    	    
+    	    	    // get data
+    	    	    var prefix = 'editHand';
+    	    	    var bonus = $('#' + prefix + '-bonus').val();
+            		var books = $('#' + prefix + '-books').val();
+            		var points = $('#' + prefix + '-points').val();
+            		
+            		if(handToEdit != null) {
+            			handToEdit.setBonus(bonus);
+            			handToEdit.setBooks(books);
+            			handToEdit.setPoints(points);
+            		}
+            		
+	        		loadGameBoard();
         		});
         	});
         	

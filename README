@@ -1,3 +1,8 @@
+http://regretless.com/mobile/handAndFootScore/
+
+- Started by using jQuery mobile popup but found out it yet works correctly under Android 4.1 so redid those parts using regular jQuery mobile pages
+- Submitted comment to jQuery mobile project http://t.co/d550gsmK
+
 To demonstrate a few failing tests
 -- game test -> testHandIds -- demonstrate by taking away the clone
 -- hand test -> testGetTotal_text -- demonstrate by taking parseInt out in defaultZero method
