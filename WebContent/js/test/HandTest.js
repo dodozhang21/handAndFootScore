@@ -28,6 +28,14 @@ TestCase('HandTest', {
 //    	console.log(hand.getTotal()); // was 01200655
     	
     	assertEquals(1855, hand.getTotal());
+    },
+    
+    testJson : function() {
+    	var hand = new Hand(100, 1200, 300);
+    	hand.setId(1);
+    	
+    	//console.log(JSON.stringify(hand));
+    	assertEquals('{"bonus":100,"books":1200,"points":300,"id":1,"total":1600}', JSON.stringify(hand));
     }
     
 });

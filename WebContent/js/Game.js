@@ -34,7 +34,7 @@ Game.prototype = {
 		
 		addHandForTeam1 : function(hand) {
 			if(!isHandEmpty(hand)) {
-				// clone a copy of the hand
+				// clone a copy of the hand http://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-clone-a-javascript-object (John Resig's recommendation :))
 				var newHand = jQuery.extend({}, hand);
 //				var newHand = hand;
 				
@@ -47,7 +47,7 @@ Game.prototype = {
 		
 		addHandForTeam2 : function(hand) {
 			if(!isHandEmpty(hand)) {
-				// clone a copy of the hand
+				// clone a copy of the hand http://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-clone-a-javascript-object (John Resig's recommendation :))
 				var newHand = jQuery.extend({}, hand);
 //				var newHand = hand;
 

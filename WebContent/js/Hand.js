@@ -4,6 +4,8 @@ var Hand = function(bonus, books, points) {
 	this.points = defaultZero(points);
 	
 	this.id = '';
+	
+	this.total = this.bonus + this.books + this.points; // for jsonify
 };
 
 Hand.prototype = {
@@ -21,7 +23,7 @@ Hand.prototype = {
     },
     
     getTotal : function() {
-    	return this.bonus + this.books + this.points;
+    	return this.total;
     },
     
     setId : function(id) {
