@@ -68,8 +68,9 @@ Game.prototype = {
 		getWinner : function() {
 			// if both teams are below min score, it's not over
 			// or if the number of hands are not equal
-			if((this.getTeam1Total() < this.minScoreToWin
-					&& this.getTeam2Total() < this.minScoreToWin)
+			if(this.minScoreToWin == null
+					|| (this.getTeam1Total() < this.minScoreToWin
+							&& this.getTeam2Total() < this.minScoreToWin)
 					|| (this.getTeam1Hands().length != this.getTeam2Hands().length)) {
 				return false;
 			} else {
@@ -91,6 +92,10 @@ Game.prototype = {
 			} else {
 				return null;
 			}
+		}, 
+		
+		getMinScoreToWin : function() {
+			return this.minScoreToWin;
 		}
 
 };

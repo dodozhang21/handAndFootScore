@@ -74,7 +74,7 @@
 			 	<h3>New Hand and Foot Score Sheet</h3>
 			</div>
 			  
-		  	<div data-role="content">
+		  	<div data-role="fieldcontain">
 	          <label for="team1" class="ui-input-text">Team 1 Name:</label>
 	          <input class="ui-input-text ui-body-a ui-corner-all ui-shadow-inset" id="team1" placeholder="Team 1" data-theme="a" type="text">
 
@@ -160,7 +160,7 @@
 			<div data-theme="" data-role="header">
 				<h3>Add Hand for <span class="team1Name"></span></h3>
 			</div>
-			<div data-role="content" style="padding: 15px">
+			<div data-role="fieldcontain" style="padding: 15px">
 	          <label for="team1-bonus">Bonus:</label>
 	          <input type="number" id="team1-bonus" class="bonus" placeholder="0" data-theme="a" />
 	
@@ -179,7 +179,7 @@
 			<div data-theme="" data-role="header">
 				<h3>Add Hand for <span class="team2Name"></span></h3>
 			</div>
-			<div data-role="content" style="padding: 15px">
+			<div data-role="fieldcontain" style="padding: 15px">
 	          <label for="team2-bonus">Bonus:</label>
 	          <input type="number" id="team2-bonus" class="bonus" placeholder="0" data-theme="a" />
 	
@@ -198,7 +198,7 @@
 			<div data-theme="" data-role="header">
 				<h3>Edit Hand</h3>
 			</div>
-			<div data-role="content" style="padding: 15px">
+			<div data-role="fieldcontain" style="padding: 15px">
 	          <label for="team1-bonus">Bonus:</label>
 	          <input type="number" id="editHand-bonus" class="bonus" placeholder="0" data-theme="a" />
 	
@@ -219,11 +219,24 @@
         	var game = new Game();
         	var handToEdit;
         	
-        	$( document ).on( "pageinit", function() {
+        	$( document ).on( "pageinit", function(e) {
         		$('.showLoading').click(function() {
         			$.mobile.loading( 'show' );
         		});
+        		
         	});
+
+        	
+        	// to prevent the user from loading another "page" via url
+        	$(document).on('pagebeforeshow', function (e) {
+        		var pageId = $(e.target).attr('id');
+        		if('home' != pageId
+        				&& 'newGame' != pageId
+        				&& game.getMinScoreToWin() == null) {
+        			window.location='index.html';
+        		}
+        	});
+        	
         	
         	$( '#newGame' ).on("pagebeforeshow", function() {
         		// clear inputs
