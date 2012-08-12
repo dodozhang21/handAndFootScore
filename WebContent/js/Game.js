@@ -1,9 +1,8 @@
-var MinScoreToWin = 10000;
-
-var Game = function(team1, team2) {
+var Game = function(team1, team2, minScoreToWin) {
 	
 	this.team1 = jQuery.trim(team1) == '' ? 'Team 1' : team1;
     this.team2 = jQuery.trim(team2) == '' ? 'Team 2' : team2;
+    this.minScoreToWin = minScoreToWin;
     
     this.team1Score = 0;
     this.team2Score = 0;
@@ -68,14 +67,16 @@ Game.prototype = {
 		
 		getWinner : function() {
 			// if both teams are below min score, it's not over
-			if(this.getTeam1Total() < MinScoreToWin
-					&& this.getTeam2Total() < MinScoreToWin) {
-				return 'The game is not yet over.';
+			// or if the number of hands are not equal
+			if((this.getTeam1Total() < this.minScoreToWin
+					&& this.getTeam2Total() < this.minScoreToWin)
+					|| (this.getTeam1Hands().length != this.getTeam2Hands().length)) {
+				return false;
 			} else {
 				if(this.getTeam1Total() > this.getTeam2Total()) {
-					return this.getTeam1() + ' won';
+					return this.getTeam1() + ' won! Congratulations!';
 				} else if(this.getTeam2Total() > this.getTeam1Total()) {
-					return this.getTeam2() + ' won';
+					return this.getTeam2() + ' won! Congratulations!';
 				} else {
 					return "It's a tie!";
 				}

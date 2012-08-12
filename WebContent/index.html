@@ -48,16 +48,16 @@
 		
  
         <!-- home -->
-        <div id="home" data-role="page" data-theme="a" data-title="Hand and Foot Score">
+        <div id="home" data-role="page" data-theme="a" data-title="Hand and Foot Scores">
             <div data-theme="" data-role="header">
                 <h3>
-                    Hand and Foot Score
+                    Hand and Foot Scores
                 </h3>
             </div>
             
             <div data-role="content">
                 <a data-role="button"  data-theme="b" href="#newGame">
-                    New Game
+                    New Score Sheet
                 </a>
                 <!--  
                 <a data-role="button"  href="#scoreHistory">
@@ -71,15 +71,18 @@
         <!-- newGame -->
         <div id="newGame" data-role="page" data-theme="a">
 			<div data-theme="" data-role="header">	
-			 	<h3>Enter Team Names</h3>
+			 	<h3>New Hand and Foot Score Sheet</h3>
 			</div>
 			  
 		  	<div data-role="content">
-	          <label for="team1" class="ui-hidden-accessible ui-input-text">Team 1:</label>
-	          <input class="ui-input-text ui-body-a ui-corner-all ui-shadow-inset" name="team1" id="team1" placeholder="Team 1" data-theme="a" type="text">
+	          <label for="team1" class="ui-input-text">Team 1 Name:</label>
+	          <input class="ui-input-text ui-body-a ui-corner-all ui-shadow-inset" id="team1" placeholder="Team 1" data-theme="a" type="text">
 
-	          <label for="team2" class="ui-hidden-accessible">Team 2:</label>
-	          <input class="ui-input-text ui-body-a ui-corner-all ui-shadow-inset" name="team2" id="team2" placeholder="Team 2" data-theme="a" type="text">
+	          <label for="team2" class="ui-input-text">Team 2 Name:</label>
+	          <input class="ui-input-text ui-body-a ui-corner-all ui-shadow-inset" id="team2" placeholder="Team 2" data-theme="a" type="text">
+	          
+	          <label for="minScoreToWin" class="ui-input-text">Minimum Points to Win:</label>
+	          <input class="ui-input-text ui-body-a ui-corner-all ui-shadow-inset" id="minScoreToWin" value="10000" data-theme="a" type="number">
 	    	  
 	    	  <br />
 	    	  <a data-role="button" data-theme="b" id="startGame">Start Game</a>
@@ -110,6 +113,19 @@
 		  			<div class="ui-block-b"><a data-role="button" data-theme="b" data-rel="popup" href="#toBeImplemented">Submit Scores</a></div>
 		  		</fieldset>
 		  		
+		  		<!-- winner popup -->
+		  		<div data-role="popup" id="winner" data-overlay-theme="a" data-theme="e" style="max-width:350px;" class="ui-corner-all">
+					<div data-role="header" data-theme="e" class="ui-corner-top ui-content">
+						<h1>Game has concluded</h1>
+					</div>
+					<div data-role="content" data-theme="d" class="ui-corner-bottom ui-content">
+						<h3 class="ui-title"><span id="winnerMsg"></span></h3>
+						<div style="padding-top: 20px">
+							<a href="#" data-rel="back" data-role="button" data-theme="c">OK</a>
+						</div>
+					</div>
+				</div>
+		  		
 		  		<!-- confirmation popup -->
 		  		<div data-role="popup" id="doneConfirmation" data-overlay-theme="a" data-theme="c" style="max-width:350px;" class="ui-corner-all">
 					<div data-role="header" data-theme="a" class="ui-corner-top">
@@ -119,7 +135,7 @@
 						<h3 class="ui-title">Are you sure you are done?</h3>
 						<p>This will reset all of the scores and this action cannot be undone.</p>
 						<a href="#" data-role="button" data-inline="true" data-rel="back" data-theme="c">No, cancel</a>    
-						<a id="goHome" data-role="button" data-inline="true" data-rel="back" data-theme="b">Yes, I'm sure</a>  
+						<a href="#home" data-role="button" data-inline="true" data-theme="b">Yes, I'm sure</a>  
 					</div>
 				</div>
 				
@@ -213,6 +229,7 @@
         		// clear inputs
         		$('#team1').val('');
         		$('#team2').val('');
+        		$('#minScoreToWin').val('10000');
         	});
         	
         	$( '#newGame' ).on("pageinit", function() {
@@ -223,7 +240,16 @@
         	
         	$( '#gameBoard' ).on("pagebeforeshow", function() {
 //         		console.log('gameBoard pagebeforeshow');
+
         		$.mobile.loading( 'hide' );
+        	});
+
+        	$( '#gameBoard' ).on("pageshow", function() {
+				var gameWinner = game.getWinner();
+				if(gameWinner) {
+					$('#winnerMsg').html(gameWinner);
+					$('#winner').popup("open");
+				}
         	});
         	
         	$( '#gameBoard' ).on("pageinit", function() {
@@ -243,11 +269,6 @@
     	    	    e.preventDefault();
         			$('#doneConfirmation').popup("open");
         		});
-        		$('#goHome').click(function (e) {
-    	    	    e.stopImmediatePropagation();
-    	    	    e.preventDefault();
-    	    	    $.mobile.changePage ($( '#home' ));
-        		});
         	});
         	
         	$( '#editHandPage' ).on("pagebeforeshow", function() {
@@ -262,7 +283,6 @@
         		$('#editHand').click(function(e) {
     	    	    e.stopImmediatePropagation();
     	    	    e.preventDefault();
-    	    	    
     	    	    
     	    	    // get data
     	    	    var prefix = 'editHand';
@@ -319,10 +339,11 @@
         	    
         		var team1 = $('#team1').val();
         		var team2 = $('#team2').val();
+        		var minScoreToWin = $('#minScoreToWin').val();
         		//console.log(team1);
         		//console.log(team2);
         		
-        		game = new Game(team1, team2);
+        		game = new Game(team1, team2, minScoreToWin);
         		
         		$('#team1Name').html(game.getTeam1());
         		$('#team2Name').html(game.getTeam2());
@@ -348,8 +369,6 @@
         	}
 			function loadGameBoard() {
 				$.mobile.loading( 'show' );
-				
-				
 
         		$('#gameScoresArea').empty();
         		
