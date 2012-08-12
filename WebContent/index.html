@@ -13,7 +13,7 @@
             	text-align: right;
             	padding-right: 20px;
             }
-            
+           
             .scoreAlt1 {
             	padding: 10px 0;
             	background-color:#111;
@@ -74,7 +74,7 @@
 	          <input class="ui-input-text ui-body-a ui-corner-all ui-shadow-inset" name="team2" id="team2" placeholder="Team 2" data-theme="a" type="text">
 	    	  
 	    	  <br />
-	    	  <a data-role="button" data-theme="b" id="startGame" href="#gameBoard">Start Game</a>
+	    	  <a data-role="button" data-theme="b" id="startGame">Start Game</a>
              </div>
 			
 		</div><!-- /newGame -->
@@ -91,6 +91,7 @@
 			</div>
 				  
 		  	<div data-role="content" style="padding: 15px">
+		  		<div id="gameScoresArea">
 		  		<div class="ui-grid-a ui-corner-all scoreAlt1">
 					<div class="ui-block-a scoreColumn">
 						<a class="editHand show-page-loading-msg" data-role="button" data-theme="" data-inline="true" data-icon="gear">Edit Hand</a>
@@ -173,26 +174,43 @@
 						</div>
 					</div>
 				</div><!-- /grid-a -->
+				</div>
+				
 		  	
 		  		<fieldset class="ui-grid-a">
-		  			<div class="ui-block-a scoreColumn"><button data-theme="e" data-inline="true" id="team1TotalButton">Total: <span id="team1TotalPoints"></span></button></div>
-		  			<div class="ui-block-b scoreColumn" style="text-align: right"><button data-theme="e" data-inline="true" id="team2TotalButton">Total: <span id="team2TotalPoints"></span></button></div>
+		  			<div class="ui-block-a scoreColumn"><button data-theme="e" data-inline="true" id="team1TotalButton">Total: <span id="team1TotalPoints">0</span></button></div>
+		  			<div class="ui-block-b scoreColumn" style="text-align: right"><button data-theme="e" data-inline="true" id="team2TotalButton">Total: <span id="team2TotalPoints">0</span></button></div>
 		  		</fieldset>
 		  		<fieldset class="ui-grid-a" style="padding-top: 20px;">
-		  			<div class="ui-block-a"><a data-role="button" data-theme="b" href="#home">Done</a></div>
-		  			<div class="ui-block-b"><a data-role="button" data-theme="b" href="#submitScores">Submit Scores</a></div>
+		  			<div class="ui-block-a"><a data-role="button" data-theme="b" class="doneConfirmation">Done</a></div>
+		  			<div class="ui-block-b"><a data-role="button" data-theme="b" data-rel="popup" href="#toBeImplemented">Submit Scores</a></div>
 		  		</fieldset>
+		  		
+		  		<div data-role="popup" id="doneConfirmation" data-overlay-theme="a" data-theme="c" style="max-width:350px;" class="ui-corner-all">
+					<div data-role="header" data-theme="a" class="ui-corner-top">
+						<h1>Confirmation</h1>
+					</div>
+					<div data-role="content" data-theme="d" class="ui-corner-bottom ui-content">
+						<h3 class="ui-title">Are you sure you are done?</h3>
+						<p>This will reset all of the scores and this action cannot be undone.</p>
+						<a href="#" data-role="button" data-inline="true" data-rel="back" data-theme="c">No, cancel</a>    
+						<a id="goHome" data-role="button" data-inline="true" data-rel="back" data-theme="b">Yes, I'm sure</a>  
+					</div>
+				</div>
+				
+				<div data-role="popup" id="toBeImplemented" data-overlay-theme="a" data-theme="e" class="ui-corner-all">
+					<a href="#" data-rel="back" data-role="button" data-theme="e" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+					<div data-role="header" data-theme="e" class="ui-corner-top">
+						<h1>To be implemented</h1>
+					</div>
+					<div data-role="content" data-theme="d" class="ui-corner-bottom ui-content">
+						<h3 class="ui-title" style="text-align: center">^___^</h3>
+					</div>
+				</div>
 		  	</div>
 			
 		</div><!-- /gameBoard -->
 		
-		
-		<div id="submitScores" data-role="page" data-theme="a">
-			TO BE IMPLEMENTED :)
-			<a data-role="button"  data-theme="b" href="#home">Done</a>
-		</div><!-- /submitScores -->
-        
-        
         
         
         
@@ -248,38 +266,36 @@
         		});
         	});
         	
-        	
         	$( '#newGame' ).on("pageinit", function() {
+        		$('#startGame').click(function() {
+        			initGameBoard();
+        		});
+        	});
+        	
+        	$( '#newGame' ).on("pagebeforeshow", function() {
         		// clear inputs
         		$('#team1').val('');
         		$('#team2').val('');
         	});
         	
-//         	$( '#gameBoard' ).on("pagebeforeshow", function() {
-//         		$.mobile.loading( 'show' );
-//         	});
-        	
-        	$( '#gameBoard' ).on("pageinit", function() {
-        		var d = new Date();
-        	    var curr_date = d.getDate();
-        	    var curr_month = d.getMonth() + 1; //Months are zero based
-        	    var curr_year = d.getFullYear();
-        	    var todaysDate = curr_month + "/" + curr_date + "/" + curr_year;
-        	    
-        		var team1 = $('#team1').val();
-        		var team2 = $('#team2').val();
-        		//console.log(team1);
-        		//console.log(team2);
-        		
-        		game = new Game(team1, team2);
-        		
-        		$('#team1Name').html(game.getTeam1());
-        		$('#team2Name').html(game.getTeam2());
-        		$('#todaysDate').html(todaysDate);
-        		
+        	$( '#gameBoard' ).on("pagebeforeshow", function() {
+        		console.log('gameBoard pagebeforeshow');
         		$.mobile.loading( 'hide' );
         	});
         	
+        	$( '#gameBoard' ).on("pageinit", function() {
+        		console.log('gameBoard pageinit');
+        		$('a.doneConfirmation').click(function (e) {
+    	    	    e.stopImmediatePropagation();
+    	    	    e.preventDefault();
+        			$('#doneConfirmation').popup("open");
+        		});
+        		$('#goHome').click(function (e) {
+    	    	    e.stopImmediatePropagation();
+    	    	    e.preventDefault();
+    	    	    $.mobile.changePage ($( '#home' ));
+        		});
+        	});
         	
         	$( '#addHandTeam1' ).on("pageinit", function() {
         		loadTeamNames();
@@ -307,6 +323,30 @@
         		});
         	});
         	
+        	function initGameBoard() {
+        		var d = new Date();
+        	    var curr_date = d.getDate();
+        	    var curr_month = d.getMonth() + 1; //Months are zero based
+        	    var curr_year = d.getFullYear();
+        	    var todaysDate = curr_month + "/" + curr_date + "/" + curr_year;
+        	    
+        		var team1 = $('#team1').val();
+        		var team2 = $('#team2').val();
+        		//console.log(team1);
+        		//console.log(team2);
+        		
+        		game = new Game(team1, team2);
+        		
+        		$('#team1Name').html(game.getTeam1());
+        		$('#team2Name').html(game.getTeam2());
+        		$('#todaysDate').html(todaysDate);
+        		
+        		$('#team1TotalPoints').html('0');
+        		$('#team2TotalPoints').html('0');
+        		$('#gameScoresArea').remove();
+        		
+        		$.mobile.changePage ($( '#gameBoard' ));
+        	}
         	function getHand(prefix) {
         		var bonus = $('#' + prefix + '-bonus').val();
         		var books = $('#' + prefix + '-books').val();

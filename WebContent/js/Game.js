@@ -22,12 +22,24 @@ Game.prototype = {
 			return this.team2;
 		},
 		
+		getTeam1Hands : function() {
+			return this.team1Hands;
+		},
+		
+		getTeam2Hands : function() {
+			return this.team2Hands;
+		},
+		
 		addHandForTeam1 : function(hand) {
-			this.team1Hands.push(hand);
+			if(!isHandEmpty(hand)) {
+				this.team1Hands.push(hand);
+			}
 		},
 		
 		addHandForTeam2 : function(hand) {
-			this.team2Hands.push(hand);
+			if(!isHandEmpty(hand)) {
+				this.team2Hands.push(hand);
+			}
 		},
 		
 		getTeam1Total : function() {
@@ -63,4 +75,10 @@ function getTotalForHands(hands) {
 		totalForHands += hand.getTotal();
 	}
 	return totalForHands;
+}
+function isHandEmpty(hand) {
+	return hand.getBonus() == 0
+		&& hand.getBooks() == 0
+		&& hand.getPoints() == 0
+		;
 }

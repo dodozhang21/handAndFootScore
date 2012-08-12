@@ -33,10 +33,22 @@ TestCase('GameTest', {
     	var hand1Team2 = new Hand(100, 1000, 540);
     	game.addHandForTeam2(hand1Team2);
     	
-//    	console.log(game.getTeam1Total());
-//    	console.log(game.getTeam2Total());
     	assertEquals(4050, game.getTeam1Total());
     	assertEquals(1640, game.getTeam2Total());
+    },
+    
+    testAddEmptyHand : function() {
+    	var team1 = 'Todd and Mike';
+    	var team2 = 'Shane and Terry';
+    	
+    	var game = new Game(team1, team2);
+    	
+    	var emptyHand = new Hand(0, 0, 0);
+    	game.addHandForTeam1(emptyHand);
+    	game.addHandForTeam2(emptyHand);
+    	
+    	assertEquals('Empty hand should not be added for team 1', 0, game.getTeam1Hands().length);
+    	assertEquals('Empty hand should not be added for team 2', 0, game.getTeam2Hands().length);
     },
     
     testGameNotOver : function() {
