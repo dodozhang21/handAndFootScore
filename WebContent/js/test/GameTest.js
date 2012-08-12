@@ -19,6 +19,26 @@ TestCase('GameTest', {
         
     },
     
+    testGetTeamTotals : function() {
+    	var team1 = 'Todd and Mike';
+    	var team2 = 'Shane and Terry';
+    	
+    	var game = new Game(team1, team2);
+    	
+    	var hand1Team1 = new Hand(100, 1200, 725);
+    	game.addHandForTeam1(hand1Team1);
+    	var hand2Team1 = new Hand(100, 1200, 725);
+    	game.addHandForTeam1(hand2Team1);
+    	
+    	var hand1Team2 = new Hand(100, 1000, 540);
+    	game.addHandForTeam2(hand1Team2);
+    	
+//    	console.log(game.getTeam1Total());
+//    	console.log(game.getTeam2Total());
+    	assertEquals(4050, game.getTeam1Total());
+    	assertEquals(1640, game.getTeam2Total());
+    },
+    
     testGameNotOver : function() {
     	var team1 = 'Todd and Mike';
     	var team2 = 'Shane and Terry';

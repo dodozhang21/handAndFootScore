@@ -20,6 +20,14 @@ TestCase('HandTest', {
     	hand3 = new Hand(0, -300, -55);
     	
     	assertEquals(-355, hand3.getTotal());
+    },
+    
+    testGetTotal_text : function() {
+    	var hand = new Hand('00', '1200', '655');
+    	
+//    	console.log(hand.getTotal()); // was 01200655
+    	
+    	assertEquals(1855, hand.getTotal());
     }
     
 });

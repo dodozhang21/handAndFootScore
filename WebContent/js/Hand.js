@@ -31,6 +31,6 @@ function defaultZero(param) {
 	} else if(!parseInt(param)) {
 		return 0;
 	} else {
-		return param;
+		return parseInt(param);
 	}
 }

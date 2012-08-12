@@ -175,8 +175,8 @@
 				</div><!-- /grid-a -->
 		  	
 		  		<fieldset class="ui-grid-a">
-		  			<div class="ui-block-a scoreColumn"><button data-theme="e" data-inline="true">Total: 1500</button></div>
-		  			<div class="ui-block-b scoreColumn" style="text-align: right"><button data-theme="e" data-inline="true">Total: 1500</button></div>
+		  			<div class="ui-block-a scoreColumn"><button data-theme="e" data-inline="true" id="team1TotalButton">Total: <span id="team1TotalPoints"></span></button></div>
+		  			<div class="ui-block-b scoreColumn" style="text-align: right"><button data-theme="e" data-inline="true" id="team2TotalButton">Total: <span id="team2TotalPoints"></span></button></div>
 		  		</fieldset>
 		  		<fieldset class="ui-grid-a" style="padding-top: 20px;">
 		  			<div class="ui-block-a"><a data-role="button" data-theme="b" href="#home">Done</a></div>
@@ -312,11 +312,23 @@
         		var books = $('#' + prefix + '-books').val();
         		var points = $('#' + prefix + '-points').val();
         		
+//         		console.log('bonus = ' + bonus);
+//         		console.log('books = ' + books);
+//         		console.log('points = ' + points);
+        		
         		var hand = new Hand(bonus, books, points);
         		return hand;
         	}
 			function loadGameBoard() {
 				$.mobile.loading( 'show' );
+				
+				console.log('team 1 total = ' + game.getTeam1Total());
+				console.log('team 2 total = ' + game.getTeam2Total());
+        		
+        		// get totals
+        		$('#team1TotalPoints').html(game.getTeam1Total());
+        		$('#team2TotalPoints').html(game.getTeam2Total());
+        		
         		$.mobile.changePage ($( '#gameBoard' ));
 			}
         	function loadTeamNames() {
