@@ -8,8 +8,10 @@ var Game = function(team1, team2) {
     this.team1Score = 0;
     this.team2Score = 0;
     
-    this.team1Hands = [];
-    this.team2Hands = [];
+    this.team1Hands = {};
+    this.team2Hands = {};
+    
+    this.handCounter = 0;
 };
 
 Game.prototype = {
@@ -23,22 +25,36 @@ Game.prototype = {
 		},
 		
 		getTeam1Hands : function() {
-			return this.team1Hands;
+			return getHandsArray(this.team1Hands);
 		},
 		
 		getTeam2Hands : function() {
-			return this.team2Hands;
+			return getHandsArray(this.team2Hands);
 		},
 		
 		addHandForTeam1 : function(hand) {
 			if(!isHandEmpty(hand)) {
-				this.team1Hands.push(hand);
+				// clone a copy of the hand
+				var newHand = jQuery.extend({}, hand);
+//				var newHand = hand;
+				
+				this.handCounter++;
+				newHand.setId(this.handCounter);
+				this.team1Hands[this.handCounter] = newHand;
+				return newHand;
 			}
 		},
 		
 		addHandForTeam2 : function(hand) {
 			if(!isHandEmpty(hand)) {
-				this.team2Hands.push(hand);
+				// clone a copy of the hand
+				var newHand = jQuery.extend({}, hand);
+//				var newHand = hand;
+
+				this.handCounter++;
+				newHand.setId(this.handCounter);
+				this.team2Hands[this.handCounter] = newHand;
+				return newHand;
 			}
 		},
 		
@@ -51,7 +67,7 @@ Game.prototype = {
 		},
 		
 		getWinner : function() {
-			// if either team is below min score, it's not over
+			// if both teams are below min score, it's not over
 			if(this.getTeam1Total() < MinScoreToWin
 					&& this.getTeam2Total() < MinScoreToWin) {
 				return 'The game is not yet over.';
@@ -64,6 +80,16 @@ Game.prototype = {
 					return "It's a tie!";
 				}
 			}
+		},
+		
+		findHand : function(id) {
+			if(this.team1Hands[id] != null) {
+				return this.team1Hands[id];
+			} else if(this.team2Hands[id] != null) {
+				return this.team2Hands[id];
+			} else {
+				return null;
+			}
 		}
 
 };
@@ -75,6 +101,13 @@ function getTotalForHands(hands) {
 		totalForHands += hand.getTotal();
 	}
 	return totalForHands;
+}
+function getHandsArray(handsMap) {
+	var handsArray = [];
+	for (var index in handsMap) {
+		handsArray.push(handsMap[index]);
+	}
+	return handsArray;
 }
 function isHandEmpty(hand) {
 	return hand.getBonus() == 0

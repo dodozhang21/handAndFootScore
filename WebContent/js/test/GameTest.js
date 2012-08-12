@@ -19,6 +19,74 @@ TestCase('GameTest', {
         
     },
     
+    testHandIds : function() {
+    	var team1 = 'Todd and Mike';
+    	var team2 = 'Shane and Terry';
+    	
+    	var game = new Game(team1, team2);
+    	
+    	var hand1 = new Hand(100, 1200, 725);
+    	game.addHandForTeam1(hand1);
+    	var hand2 = new Hand(100, 1200, 725);
+    	game.addHandForTeam2(hand2); // reference issue <-- therefore implemented clone
+    	game.addHandForTeam2(hand2);
+    	
+    	var uniqueIds = [];
+    	
+    	for(index in game.getTeam1Hands()) {
+    		var thisHand = game.getTeam1Hands()[index];
+    		//console.log(thisHand.getId());
+    		assertNotNull(thisHand.getId());
+    		if(jQuery.inArray(thisHand.getId(), uniqueIds) != -1) {
+    			fail('id "' + thisHand.getId() + '" already exists. All hand ids in game are supposed to be unique.');
+    		}
+    		uniqueIds.push(thisHand.getId());
+    	}
+    	
+    	for(index in game.getTeam2Hands()) {
+    		var thisHand = game.getTeam2Hands()[index];
+    		//console.log(thisHand.getId());
+    		assertNotNull(thisHand.getId());
+    		if(jQuery.inArray(thisHand.getId(), uniqueIds) != -1) {
+    			fail('id "' + thisHand.getId() + '" already exists. All hand ids in game are supposed to be unique.');
+    		}
+    		uniqueIds.push(thisHand.getId());
+    	}
+        
+    },
+    
+    testFindHand : function() {
+    	var team1 = 'Todd and Mike';
+    	var team2 = 'Shane and Terry';
+    	
+    	var game = new Game(team1, team2);
+    	
+    	var hand1 = new Hand(100, 1200, 725);
+    	hand1 = game.addHandForTeam1(hand1);
+    	var hand2 = new Hand(100, 1200, 725);
+    	hand2 = game.addHandForTeam2(hand2);
+    	var hand3 = new Hand(103, 1203, 723);
+    	hand3 = game.addHandForTeam2(hand3);
+    	
+    	assertNotNull(game.findHand(hand1.getId()));
+    	assertNotNull(game.findHand(hand2.getId()));
+    	assertNotNull(game.findHand(hand3.getId()));
+    },
+    
+    testAddEmptyHand : function() {
+    	var team1 = 'Todd and Mike';
+    	var team2 = 'Shane and Terry';
+    	
+    	var game = new Game(team1, team2);
+    	
+    	var emptyHand = new Hand(0, 0, 0);
+    	game.addHandForTeam1(emptyHand);
+    	game.addHandForTeam2(emptyHand);
+    	
+    	assertEquals('Empty hand should not be added for team 1', 0, game.getTeam1Hands().length);
+    	assertEquals('Empty hand should not be added for team 2', 0, game.getTeam2Hands().length);
+    },
+    
     testGetTeamTotals : function() {
     	var team1 = 'Todd and Mike';
     	var team2 = 'Shane and Terry';
@@ -35,20 +103,6 @@ TestCase('GameTest', {
     	
     	assertEquals(4050, game.getTeam1Total());
     	assertEquals(1640, game.getTeam2Total());
-    },
-    
-    testAddEmptyHand : function() {
-    	var team1 = 'Todd and Mike';
-    	var team2 = 'Shane and Terry';
-    	
-    	var game = new Game(team1, team2);
-    	
-    	var emptyHand = new Hand(0, 0, 0);
-    	game.addHandForTeam1(emptyHand);
-    	game.addHandForTeam2(emptyHand);
-    	
-    	assertEquals('Empty hand should not be added for team 1', 0, game.getTeam1Hands().length);
-    	assertEquals('Empty hand should not be added for team 2', 0, game.getTeam2Hands().length);
     },
     
     testGameNotOver : function() {

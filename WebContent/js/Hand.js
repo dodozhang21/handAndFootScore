@@ -2,6 +2,8 @@ var Hand = function(bonus, books, points) {
 	this.bonus = defaultZero(bonus);
 	this.books = defaultZero(books);
 	this.points = defaultZero(points);
+	
+	this.id = '';
 };
 
 Hand.prototype = {
@@ -20,8 +22,15 @@ Hand.prototype = {
     
     getTotal : function() {
     	return this.bonus + this.books + this.points;
-    }
+    },
     
+    setId : function(id) {
+    	this.id = id;
+    },
+    
+    getId : function() {
+    	return this.id;
+    }
     
 };
 

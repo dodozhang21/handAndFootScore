@@ -1,0 +1,3 @@
+To demonstrate a few failing tests
+-- game test -> testHandIds -- demonstrate by taking away the clone
+-- hand test -> testGetTotal_text -- demonstrate by taking parseInt out in defaultZero method
