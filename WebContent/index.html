@@ -26,6 +26,10 @@
             .totalForHand {
             	border-top: 1px solid #fff;
             }
+            
+            .addHandText {
+            	font-size: 14px;
+            }
         </style>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
         <script src="http://code.jquery.com/mobile/1.2.0-alpha.1/jquery.mobile-1.2.0-alpha.1.min.js"></script>
@@ -87,25 +91,26 @@
 		<!-- gameBoard -->
 		<div id="gameBoard" data-transition="pop" data-corners="true" data-shadow="true" data-role="page" data-theme="a">
 			<div data-theme="" data-role="header" data-position="fixed">	
-    			<a href="#addHandTeam1" data-icon="plus" data-theme="b"><span style="font-size: 14px">Add Hand for <span id="team1Name"></span></span></a>
+    			<a href="#addHandTeam1" data-icon="plus" data-theme="b"><span class="addHandText">Add Hand for <span id="team1Name"></span></span></a>
 				<h1 style="text-align:center;">
 					Hand and Foot on <span id="todaysDate"></span>
 				</h1>
-    			<a href="#addHandTeam2" data-icon="plus" data-theme="b"><span style="font-size: 14px">Add Hand for <span id="team2Name"></span></span></a>
+    			<a href="#addHandTeam2" data-icon="plus" data-theme="b"><span class="addHandText">Add Hand for <span id="team2Name"></span></span></a>
 			</div>
 				  
 		  	<div data-role="content" style="padding: 15px">
 		  		<div id="gameScoresArea"></div>
 		  	
-		  		<fieldset class="ui-grid-a">
+		  		<fieldset class="ui-grid-a" style="padding-top: 20px">
 		  			<div class="ui-block-a scoreColumn"><button data-theme="e" data-inline="true" id="team1TotalButton">Total: <span id="team1TotalPoints">0</span></button></div>
 		  			<div class="ui-block-b scoreColumn" style="text-align: right"><button data-theme="e" data-inline="true" id="team2TotalButton">Total: <span id="team2TotalPoints">0</span></button></div>
 		  		</fieldset>
-		  		<fieldset class="ui-grid-a" style="padding-top: 20px;">
+		  		<fieldset class="ui-grid-a" style="padding-top: 20px">
 		  			<div class="ui-block-a"><a data-role="button" data-theme="b" class="doneConfirmation">Done</a></div>
 		  			<div class="ui-block-b"><a data-role="button" data-theme="b" data-rel="popup" href="#toBeImplemented">Submit Scores</a></div>
 		  		</fieldset>
 		  		
+		  		<!-- confirmation popup -->
 		  		<div data-role="popup" id="doneConfirmation" data-overlay-theme="a" data-theme="c" style="max-width:350px;" class="ui-corner-all">
 					<div data-role="header" data-theme="a" class="ui-corner-top">
 						<h1>Confirmation</h1>
@@ -118,13 +123,11 @@
 					</div>
 				</div>
 				
+				<!-- to be implemented popup -->
 				<div data-role="popup" id="toBeImplemented" data-overlay-theme="a" data-theme="e" class="ui-corner-all">
 					<a href="#" data-rel="back" data-role="button" data-theme="e" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
-					<div data-role="header" data-theme="e" class="ui-corner-top">
-						<h1>To be implemented</h1>
-					</div>
-					<div data-role="content" data-theme="d" class="ui-corner-bottom ui-content">
-						<h3 class="ui-title" style="text-align: center">^___^</h3>
+					<div data-role="content" data-theme="d" class="ui-corner-all ui-content">
+						<h3 class="ui-title" style="text-align: center">To be implemented ^___^</h3>
 					</div>
 				</div>
 		  	</div>
