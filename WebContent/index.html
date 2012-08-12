@@ -205,15 +205,15 @@
 			</div>
 			<div data-role="content" style="padding: 15px">
 	          <label for="team1-bonus">Bonus:</label>
-	          <input type="text" id="team1-bonus" class="bonus" placeholder="0" data-theme="a" />
+	          <input type="number" id="team1-bonus" class="bonus" placeholder="0" data-theme="a" />
 	
 	          <label for="team1-books">Books:</label>
-	          <input type="text" id="team1-books" class="books" placeholder="0" data-theme="a" />
+	          <input type="number" id="team1-books" class="books" placeholder="0" data-theme="a" />
 	          
 	          <label for="team1-points">Points:</label>
-	          <input type="text" id="team1-points" class="points" placeholder="0" data-theme="a" />
+	          <input type="number" id="team1-points" class="points" placeholder="0" data-theme="a" />
 				<br />
-	    	  <a data-role="button" data-theme="b" href="#gameBoard">Add Hand</a>
+	    	  <a data-role="button" data-theme="b" class="addHand">Add Hand</a>
 			</div>
 		</div><!-- /addHandTeam1 -->
 		
@@ -224,15 +224,15 @@
 			</div>
 			<div data-role="content" style="padding: 15px">
 	          <label for="team2-bonus">Bonus:</label>
-	          <input type="text" id="team2-bonus" class="bonus" placeholder="0" data-theme="a" />
+	          <input type="number" id="team2-bonus" class="bonus" placeholder="0" data-theme="a" />
 	
 	          <label for="team2-books">Books:</label>
-	          <input type="text" id="team2-books" class="books" placeholder="0" data-theme="a" />
+	          <input type="number" id="team2-books" class="books" placeholder="0" data-theme="a" />
 	          
 	          <label for="team2-points">Points:</label>
-	          <input type="text" id="team2-points" class="points" placeholder="0" data-theme="a" />
+	          <input type="number" id="team2-points" class="points" placeholder="0" data-theme="a" />
 				<br />
-			  <a data-role="button" data-theme="b" href="#gameBoard">Add Hand</a>
+			  <a data-role="button" data-theme="b" class="addHand">Add Hand</a>
 			</div>
 		</div><!-- /addHandTeam2 -->
         
@@ -242,10 +242,6 @@
         <script>
         	var game = new Game();
         	
-//         	$(document).on("click", ".show-page-loading-msg", function() {
-//         		$.mobile.loading('show');
-//         	});
-        	
         	$( document ).on( "pageinit", function() {
         		$('.showLoading').click(function() {
         			$.mobile.loading( 'show' );
@@ -253,15 +249,17 @@
         	});
         	
         	
-        	$( '#newGame' ).on("pagebeforeshow", function() {
+        	$( '#newGame' ).on("pageinit", function() {
         		// clear inputs
         		$('#team1').val('');
         		$('#team2').val('');
         	});
         	
-        	$( '#gameBoard' ).on("pagebeforeshow", function() {
-        		$.mobile.loading( 'show' );
-        		
+//         	$( '#gameBoard' ).on("pagebeforeshow", function() {
+//         		$.mobile.loading( 'show' );
+//         	});
+        	
+        	$( '#gameBoard' ).on("pageinit", function() {
         		var d = new Date();
         	    var curr_date = d.getDate();
         	    var curr_month = d.getMonth() + 1; //Months are zero based
@@ -280,26 +278,43 @@
         		$('#todaysDate').html(todaysDate);
         		
         		$.mobile.loading( 'hide' );
-        		
         	});
         	
-//         	$( '#gameBoard' ).on("pageshow", function() {
-//         		$.mobile.loading( 'hide' );
-        		
-//         	});
         	
-        	$( '#addHandTeam1' ).on("pagebeforeshow", function() {
+        	$( '#addHandTeam1' ).on("pageinit", function() {
         		loadTeamNames();
         		clearInputs();
-        		//console.log('show addHandTeam1')
+        		
+        		$('#addHandTeam1 .addHand').click(function() {
+	        		var hand = getHand('team1');
+	        		game.addHandForTeam1(hand);
+// 	        		console.log('added hand to team 1');
+// 	        		console.log(game);
+	        		loadGameBoard();
+        		});
         	});
         	
-        	$( '#addHandTeam2' ).on("pagebeforeshow", function() {
+        	$( '#addHandTeam2' ).on("pageinit", function() {
         		loadTeamNames();
         		clearInputs();
-        		//console.log('show addHandTeam2')
+        		
+        		$('#addHandTeam2 .addHand').click(function() {
+            		var hand = getHand('team2');
+            		game.addHandForTeam2(hand);
+// 	        		console.log('added hand to team 2');
+// 	        		console.log(game);
+	        		loadGameBoard();
+        		});
         	});
         	
+        	function getHand(prefix) {
+        		var bonus = $('#' + prefix + '-bonus').val();
+        		var books = $('#' + prefix + '-books').val();
+        		var points = $('#' + prefix + '-points').val();
+        		
+        		var hand = new Hand(bonus, books, points);
+        		return hand;
+        	}
 			function loadGameBoard() {
 				$.mobile.loading( 'show' );
         		$.mobile.changePage ($( '#gameBoard' ));
