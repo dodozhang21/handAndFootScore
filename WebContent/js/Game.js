@@ -71,7 +71,7 @@ Game.prototype = {
 			if(this.minScoreToWin == null
 					|| (this.getTeam1Total() < this.minScoreToWin
 							&& this.getTeam2Total() < this.minScoreToWin)
-					|| (this.getTeam1Hands().length != this.getTeam2Hands().length)) {
+					|| !this.getNoHandsEqual()) {
 				return false;
 			} else {
 				if(this.getTeam1Total() > this.getTeam2Total()) {
@@ -82,6 +82,10 @@ Game.prototype = {
 					return "It's a tie!";
 				}
 			}
+		},
+		
+		getNoHandsEqual : function() {
+			return this.getTeam1Hands().length == this.getTeam2Hands().length;
 		},
 		
 		findHand : function(id) {
