@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Qunit</title>
+	<link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.9.0.css" />
+	<script src="http://code.jquery.com/qunit/qunit-1.9.0.js"></script>
+	<script src="yourFunctions.js"></script>
+	<script>
+	test("prettydate.format", function() {
+		var expected = "just now";
+		equal(prettyDate.format("2008/01/28 22:25:00"), expected);
+	});
+	</script>
+</head>
+<body>
+	<div id="qunit"></div>
+	<div id="qunit-fixture">
+		<!-- any HTML required to run your tests -->
+	</div>
+</body>
+</html>
+

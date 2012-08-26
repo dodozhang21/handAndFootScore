@@ -9,6 +9,17 @@
         <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0-alpha.1/jquery.mobile-1.2.0-alpha.1.min.css" />
     
         <style>
+        	.totalScoreTeamName {
+        		font-size: 1.5em;
+        		white-space: nowrap;
+        	}
+        	
+        	.totalScoreDisplay {
+        		font-size: 5em;
+        		white-space: nowrap;
+        	}
+        	
+        	
             .scoreColumn {
             	text-align: right;
             	padding-right: 20px;
@@ -41,14 +52,12 @@
         <script src="http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
   		
   		<!-- lib js -->
-        <script src="js/jquery-idleTimer.0.9.js"></script>
+        <script src="js/lib/jquery-idleTimer.0.9-min.js"></script>
         
         <!-- game js -->
         <script src="js/Hand.js"></script>
         <script src="js/Game.js"></script>
-        
-        
-        
+        <script src="js/View.js"></script>
 
     </head>
     <body>	
@@ -149,15 +158,15 @@
 					<div data-role="content" data-theme="d" class="ui-corner-bottom ui-content">
 						<div class="ui-grid-a">
 							<div class="ui-block-a">
-								<strong><span class="team1Name" style="font-size: 1.5em;white-space: nowrap"></span>
+								<strong><span class="team1Name totalScoreTeamName"></span>
 								<br />
-								<span class="team1TotalPoints" style="font-size: 5em;white-space: nowrap">0</span>
+								<span class="team1TotalPoints totalScoreDisplay">0</span>
 								</strong>
 							</div>
 							<div class="ui-block-b" style="padding-left: 2em;">
-								<strong><span class="team2Name" style="font-size: 1.5em;white-space: nowrap"></span>
+								<strong><span class="team2Name totalScoreTeamName"></span>
 								<br />
-								<span class="team2TotalPoints" style="font-size: 5em;white-space: nowrap">0</span>
+								<span class="team2TotalPoints totalScoreDisplay">0</span>
 								</strong>
 							</div>
 						</div>
@@ -274,19 +283,15 @@
         
         
         <script>
+        	// global vars
         	var game = new Game();
         	var handToEdit;
     		var bigScoreIsOpen = false;
         	
+    		// works like $(document).ready on a regular web page
         	$( document ).on( "pageinit", function(e) {
-        		$('.showLoading').click(function() {
-        			$.mobile.loading( 'show' );
-        		});
-        		
-
+        		// initialize timer
         		$.idleTimer(15000); // after 15 seconds of inactivity
-        		
-        		
         	});
 
         	
@@ -301,43 +306,37 @@
         	});
         	
         	
+        	//-------------------NEW GAME PAGE
         	$( '#newGame' ).on("pagebeforeshow", function() {
-        		// clear inputs
-        		$('#team1').val('');
-        		$('#team2').val('');
-        		$('#minScoreToWin').val('10000');
+        		newGame_resetInputs();
         	});
-        	
         	$( '#newGame' ).on("pageinit", function() {
         		$('#startGame').click(function() {
         			initGameBoard();
         		});
         	});
         	
+        	
+        	//-------------------GAME BOARD PAGE
         	$( '#gameBoard' ).on("pagebeforeshow", function() {
-//         		console.log('gameBoard pagebeforeshow');
-
         		$.mobile.loading( 'hide' );
         	});
-
         	$( '#gameBoard' ).on("pageshow", function() {
+        		// bind timer/big score popup
         		$(document).bind("idle.idleTimer", function(){
         			 if(!bigScoreIsOpen && game.getNoHandsEqual()) {
              			$('#bigScorePopup').popup("open");
         			 }
         		});
         		
-        		
+        		// bind winner popup
 				var gameWinner = game.getWinner();
 				if(gameWinner) {
 					$('#winnerMsg').html(gameWinner);
 					$('#winner').popup("open");
 				}
         	});
-        	
         	$( '#gameBoard' ).on("pageinit", function() {
-//         		console.log('gameBoard pageinit');
-
 				$('#bigScorePopup').bind({
 				   popupafteropen: function(event, ui) { bigScoreIsOpen = true; },
 				   popupafterclose: function(event, ui) { bigScoreIsOpen = false; }
@@ -360,6 +359,8 @@
         		});
         	});
         	
+        	
+        	//-------------------EDIT HAND PAGE
         	$( '#editHandPage' ).on("pagebeforeshow", function() {
         		if(handToEdit != null) {
         			$('#editHand-bonus').val(handToEdit.getBonus() == 0 ? '' : handToEdit.getBonus());
@@ -367,7 +368,6 @@
         			$('#editHand-points').val(handToEdit.getPoints() == 0 ? '' : handToEdit.getPoints());
         		}
         	});
-        	
         	$( '#editHandPage' ).on("pageinit", function() {
         		$('#editHand').click(function(e) {
     	    	    e.stopImmediatePropagation();
@@ -389,130 +389,37 @@
         		});
         	});
         	
+        	
+        	//-------------------ADD HAND TEAM1 PAGE
         	$( '#addHandTeam1' ).on("pagebeforeshow", function() {
         		loadTeamNames();
         		clearInputs();
         	});
-        	
         	$( '#addHandTeam1' ).on("pageinit", function() {
         		$('#addHandTeam1 .addHand').click(function() {
 	        		var hand = getHand('team1');
 	        		game.addHandForTeam1(hand);
-// 	        		console.log('added hand to team 1');
-// 	        		console.log(game);
 	        		loadGameBoard();
         		});
         	});
         	
+        	
+        	//-------------------ADD HAND TEAM2 PAGE
         	$( '#addHandTeam2' ).on("pagebeforeshow", function() {
         		loadTeamNames();
         		clearInputs();
         	});
-        	
         	$( '#addHandTeam2' ).on("pageinit", function() {
         		$('#addHandTeam2 .addHand').click(function() {
             		var hand = getHand('team2');
             		game.addHandForTeam2(hand);
-// 	        		console.log('added hand to team 2');
-// 	        		console.log(game);
 	        		loadGameBoard();
         		});
         	});
         	
-        	function initGameBoard() {
-        		var d = new Date();
-        	    var curr_date = d.getDate();
-        	    var curr_month = d.getMonth() + 1; //Months are zero based
-        	    var curr_year = d.getFullYear();
-        	    var todaysDate = curr_month + "/" + curr_date + "/" + curr_year;
-        	    
-        		var team1 = $('#team1').val();
-        		var team2 = $('#team2').val();
-        		var minScoreToWin = $('#minScoreToWin').val();
-        		//console.log(team1);
-        		//console.log(team2);
-        		
-        		game = new Game(team1, team2, minScoreToWin);
-        		
-        		$('span.team1Name').html(game.getTeam1());
-        		$('span.team2Name').html(game.getTeam2());
-        		$('#todaysDate').html(todaysDate);
-        		
-        		$('span.team1TotalPoints').html('0');
-        		$('span.team2TotalPoints').html('0');
-        		$('#gameScoresArea').empty();
-        		
-        		$.mobile.changePage ($( '#gameBoard' ));
-        	}
-        	function getHand(prefix) {
-        		var bonus = $('#' + prefix + '-bonus').val();
-        		var books = $('#' + prefix + '-books').val();
-        		var points = $('#' + prefix + '-points').val();
-        		
-//         		console.log('bonus = ' + bonus);
-//         		console.log('books = ' + books);
-//         		console.log('points = ' + points);
-        		
-        		var hand = new Hand(bonus, books, points);
-        		return hand;
-        	}
-			function loadGameBoard() {
-				$.mobile.loading( 'show' );
-
-        		$('#gameScoresArea').empty();
-        		
-        		// which ever team has the longer length
-        		var max = game.getTeam1Hands().length > game.getTeam2Hands().length ? game.getTeam1Hands().length : game.getTeam2Hands().length;
-        		
-				for(var index = 0; index < max; index++) {
-					var team1Hand = game.getTeam1Hands()[index];
-					var team2Hand = game.getTeam2Hands()[index];
-					
-					// even or odd row
-					var rowClass = index % 2 == 0 ? 'scoreAlt1' : 'scoreAlt2';
-					
-					// create a new row
-					var rowDiv = $('<div />').appendTo('#gameScoresArea');
-					$(rowDiv).addClass("ui-grid-a ui-corner-all " + rowClass);
-					var leftColumn = $('<div />').appendTo($(rowDiv));
-					$(leftColumn).addClass("ui-block-a scoreColumn");
-					var rightColumn = $('<div />').appendTo($(rowDiv));
-					$(rightColumn).addClass("ui-block-b scoreColumn");
-					
-					
-					if(team1Hand != null) {
-// 						console.log(team1Hand);
-						$("#handTemplate").tmpl(team1Hand).appendTo($(leftColumn));
-					}
-					if(team2Hand != null) {
-// 						console.log(team2Hand);
-						$("#handTemplate").tmpl(team2Hand).appendTo($(rightColumn));
-						
-					}
-	        		
-				}
-				
-				
-// 				console.log('team 1 total = ' + game.getTeam1Total());
-// 				console.log('team 2 total = ' + game.getTeam2Total());
-        		
-        		// get totals
-        		$('span.team1TotalPoints').html(game.getTeam1Total());
-        		$('span.team2TotalPoints').html(game.getTeam2Total());
-        		
-        		$( '#gameBoard' ).trigger('create'); // make jQuery mobile redraw the buttons etc
-        		
-        		$.mobile.changePage ($( '#gameBoard' ));
-			}
-        	function loadTeamNames() {
-        		$('.team1Name').html(game.getTeam1());
-        		$('.team2Name').html(game.getTeam2());
-        	}
-        	function clearInputs() {
-        		$('input').val('');
-        	}
         </script>
 
+		<!-- jquery template for hands on the screen -->
         <script id="handTemplate" type="text/x-jquery-tmpl">
 
 	<a class="editHand" data-role="button" data-theme="" data-inline="true" data-icon="gear" hand-id="${id}">Edit Hand</a>
